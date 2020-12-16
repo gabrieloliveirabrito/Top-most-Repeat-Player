@@ -13,6 +13,25 @@
     <Window.DataContext>
         <local:Player />
     </Window.DataContext>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Overlay="{StaticResource PlayImage}" ThumbnailClipMargin="80,0,80,140" ProgressValue="{Binding TimeProgress}" ProgressState="{Binding TimeProgressState}">
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfoCollection>
+                    <ThumbButtonInfo
+                        DismissWhenClicked="False"
+                        Command="{Binding TogglePlayPauseCommand}"
+                        Description="Play"
+                        ImageSource="{StaticResource ResourceKey=PlayImage}" />
+                    <ThumbButtonInfo
+                        DismissWhenClicked="False"
+                        Command="{Binding ToggleFullScreenCommand}"
+                        Description="Stop"
+                        ImageSource="{StaticResource ResourceKey=StopImage}"/>
+                </ThumbButtonInfoCollection>
+            </TaskbarItemInfo.ThumbButtonInfos>
+
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
     <Grid Name="VideoContainer" Background="Black">
         <vlc:VideoView MediaPlayer="{Binding MediaPlayer}">
             <i:Interaction.Triggers>

@@ -8,6 +8,25 @@
     <converters:TimeSpanConverter x:Key="TimeSpanConverterNoMill" WithMilliseconds="False" />
     <converters:ImageDataConverter x:Key="ImageDataConverter" />
 
+    <DrawingImage x:Key="PlayImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="White" Geometry="F1 M 50,25L 0,0L 0,50L 50,25 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="StopImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="White" Geometry="F1 M 0,0L 50,0L 50,50L 0,50L 0,0 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <Style x:Key="PlayerWindow" TargetType="Window">
         <Setter Property="Title" Value="TMRP" />
         <Setter Property="Topmost" Value="{Binding Configuration.TopMost, FallbackValue=False}" />
@@ -124,7 +143,7 @@
                     <Setter.Value>
                         <DataTemplate>
                             <Image 
-                                Source="{Binding Source={StaticResource ImageData}, Path=PlayButton, Converter={StaticResource ImageDataConverter}}" 
+                                Source="{StaticResource PlayImage}" 
                                 Width="24"
                                 Height="24"
                             />
@@ -138,7 +157,7 @@
                     <Setter.Value>
                         <DataTemplate>
                             <Image 
-                                Source="{Binding Source={StaticResource ImageData}, Path=PauseButton, Converter={StaticResource ImageDataConverter}}" 
+                                Source="{StaticResource StopImage}" 
                                 Width="24"
                                 Height="24"
                             />

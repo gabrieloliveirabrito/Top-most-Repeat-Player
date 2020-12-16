@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -139,7 +140,11 @@ namespace TMRP.WPF
                 VLC = new LibVLC("--input-repeat=2", $"--volume={configuration.Volume}");
                 CreatePlayer();
 
-                if (configuration.LastFile != null)
+                var args = Environment.GetCommandLineArgs();
+
+                if (args.Length > 1 && File.Exists(args[1]))
+                    Play(args[1]);
+                else if (configuration.LastFile != null)
                     Play(configuration.LastFile);
 
                 Loaded = true;

@@ -3,14 +3,49 @@ using LibVLCSharp.WPF;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shell;
 
 namespace TMRP.WPF
 {
     public partial class Player
     {
+        private void InitializeData()
+        {
+            loaded = false;
+            time = 0;
+            length = 0;
+            paused = false;
+            controls = false;
+            fullscreen = false;
+        }
+
         public LibVLC VLC { get; private set; }
 
-        private bool loaded = false;
+        public double TimeProgress
+        {
+            get
+            {
+                if (!Loaded)
+                    return 0;
+                else
+                    return (100 * Time) / Length;
+            }
+        }
+
+        public TaskbarItemProgressState TimeProgressState
+        {
+            get
+            {
+                if (!Loaded)
+                    return TaskbarItemProgressState.None;
+                else if (Paused)
+                    return TaskbarItemProgressState.Paused;
+                else
+                    return TaskbarItemProgressState.Normal;
+            }
+        }
+
+        private bool loaded;
         public bool Loaded
         {
             get => loaded;
@@ -46,7 +81,7 @@ namespace TMRP.WPF
             }
         }
 
-        private long time = 0;
+        private long time;
         public long Time
         {
             get => MediaPlayer == null ? 0 : time;
@@ -54,17 +89,20 @@ namespace TMRP.WPF
             {
                 Set(ref time, value);
                 MediaPlayer.Time = value;
+
+                NotifyChanged("TimeProgress");
+                NotifyChanged("TimeProgressChanged");
             }
         }
 
-        private long length = 0;
+        private long length;
         public long Length
         {
             get => MediaPlayer == null ? 0 : length;
             set => Set(ref length, value);
         }
 
-        private bool paused = false;
+        private bool paused;
         public bool Paused
         {
             get => paused;
@@ -73,17 +111,20 @@ namespace TMRP.WPF
                 Set(ref paused, value);
                 if (MediaPlayer != null)
                     MediaPlayer.SetPause(value);
+
+                NotifyChanged("TimeProgress");
+                NotifyChanged("TimeProgressChanged");
             }
         }
 
-        private bool controls = false;
+        private bool controls;
         public bool Controls
         {
             get => controls;
             set => Set(ref controls, value);
         }
 
-        private bool fullscreen = false;
+        private bool fullscreen;
         public bool FullScreen
         {
             get => fullscreen;

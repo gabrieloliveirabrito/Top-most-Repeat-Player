@@ -1,11 +1,13 @@
 ﻿using LibVLCSharp.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Shell;
 
 namespace TMRP.WPF
 {
@@ -15,6 +17,7 @@ namespace TMRP.WPF
         {
             configuration = new Configuration();
             InitializeMethods();
+            InitializeData();
 
             //configuration.PropertyChanged += (s, e) => NotifyChanged(e.PropertyName);
         }
@@ -62,12 +65,33 @@ namespace TMRP.WPF
 
         public void Play(string filename)
         {
-            configuration.LastFile = filename;
-            TogglePlayPauseCommand = new RelayCommand<Player>(_ => TogglePause());
+            if (File.Exists(filename))
+            {
+                configuration.LastFile = filename;
+                TogglePlayPauseCommand = new RelayCommand<Player>(_ => TogglePause());
 
-            MediaPlayer.Media = new Media(VLC, configuration.LastFile, options: ":input-repeat");
-            MediaPlayer.Play();
-            Paused = false;
+                MediaPlayer.Media = new Media(VLC, configuration.LastFile, options: ":input-repeat");
+                MediaPlayer.Play();
+                Paused = false;
+
+                var list = JumpList.GetJumpList(Application.Current);
+                list.BeginInit();
+
+                if (!list.JumpItems.Cast<JumpTask>().Any(jt => jt.Arguments == filename))
+                {
+                    JumpList.AddToRecentCategory(new JumpTask
+                    {
+                        Title = Path.GetFileName(filename),
+                        ApplicationPath = Environment.GetCommandLineArgs()[0],
+                        Arguments = filename,
+                        Description = MediaPlayer.Media.Meta(MetadataType.Title),
+                        IconResourcePath = typeof(Player).Assembly.Location
+                    });
+
+                    list.Apply();
+                }
+                list.EndInit();
+            }
         }
 
         public void Play()
