@@ -123,7 +123,7 @@ namespace TMRP.WPF
             Application.Current.Shutdown();
         }
 
-        async void Initialize(RoutedEventArgs e)
+        void Initialize(RoutedEventArgs e)
         {
             if (Loaded)
             {

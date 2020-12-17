@@ -10,11 +10,11 @@ namespace TMRP.WPF
 {
     public static class User32
     {
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
+        public const int PLAY_PAUSE_COMMAND = 0x01012;
+        public const int OPEN_FILE = 0x01013;
 
         [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        public static extern int SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
     }

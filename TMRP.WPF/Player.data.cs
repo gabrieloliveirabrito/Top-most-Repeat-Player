@@ -28,7 +28,7 @@ namespace TMRP.WPF
                 if (!Loaded)
                     return 0;
                 else
-                    return (100 * Time) / Length;
+                    return (double)Time / Length;
             }
         }
 

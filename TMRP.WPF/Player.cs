@@ -75,7 +75,6 @@ namespace TMRP.WPF
                 Paused = false;
 
                 var list = JumpList.GetJumpList(Application.Current);
-                list.BeginInit();
 
                 if (!list.JumpItems.Cast<JumpTask>().Any(jt => jt.Arguments == filename))
                 {
@@ -90,7 +89,6 @@ namespace TMRP.WPF
 
                     list.Apply();
                 }
-                list.EndInit();
             }
         }
 

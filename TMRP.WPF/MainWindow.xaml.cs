@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace TMRP.WPF
 {
@@ -22,6 +24,30 @@ namespace TMRP.WPF
             
             player = DataContext as Player;
             DropCanvas.Focus();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            var source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+            source.AddHook(WndProc);
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch(msg)
+            {
+                case User32.PLAY_PAUSE_COMMAND:
+                    player.TogglePause();
+                    break;
+                case User32.OPEN_FILE:
+                    var filename = Marshal.PtrToStringBSTR(wParam);
+                    player.Play(filename);
+                    break;
+            }
+
+            return IntPtr.Zero;
         }
 
         private void EventCanvas_DragEnter(object sender, DragEventArgs e)

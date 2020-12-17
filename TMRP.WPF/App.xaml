@@ -13,8 +13,8 @@
     </Application.Resources>
 
     <JumpList.JumpList>
-        <JumpList ShowRecentCategory="True" ShowFrequentCategory="True">
-            
+        <JumpList ShowRecentCategory="True" ShowFrequentCategory="False">
+            <JumpTask Arguments="/pp" CustomCategory="Commands" Title="Play/Pause" />
         </JumpList>
     </JumpList.JumpList>
 </Application>
