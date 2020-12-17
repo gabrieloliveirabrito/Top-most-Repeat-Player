@@ -80,7 +80,7 @@
                 <Setter Property="Title">
                     <Setter.Value>
                         <MultiBinding StringFormat="{}TMRP - Volume {0}% - {1}/{2}">
-                            <Binding Source="Configuration" Path="Volume" />
+                            <Binding Path="Configuration.Volume"/>
                             <Binding Path="Time" Converter="{StaticResource TimeSpanConverterNoMill}" />
                             <Binding Path="Length" Converter="{StaticResource TimeSpanConverterNoMill}" />
                         </MultiBinding>
